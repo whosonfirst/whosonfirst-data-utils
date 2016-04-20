@@ -24,8 +24,8 @@ count:
 	find ./data -name '*.geojson' -print | wc -l
 
 makefile:
-        mv Makefile Makefile.$(YMD)
-        curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
+	mv Makefile Makefile.$(YMD)
+	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 
 list-empty:
 	find data -type d -empty -print

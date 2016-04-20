@@ -26,6 +26,10 @@ concordances:
 count:
 	find ./data -name '*.geojson' -print | wc -l
 
+gitignore:
+	mv .gitignore .gitignore.$(YMD)
+	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/.gitignore
+
 makefile:
 	mv Makefile Makefile.$(YMD)
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile

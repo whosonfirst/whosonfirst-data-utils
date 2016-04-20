@@ -30,6 +30,14 @@ gitignore:
 	mv .gitignore .gitignore.$(YMD)
 	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/.gitignore
 
+# https://internetarchive.readthedocs.org/en/latest/cli.html#upload
+# https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring
+
+internetarchive:
+	# invoke archive here
+	# ia upload $(WHOAMI)-$(YMD) $(dest)/$(WHOAMI)-$(YMD).bz2 --metadata="title:$(WHOAMI)-$(YMD)"
+	echo "please finish me"
+
 makefile:
 	mv Makefile Makefile.$(YMD)
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile

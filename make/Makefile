@@ -1,4 +1,9 @@
 WHOAMI = $(shell basename `pwd`)
+YMD = $(shell date "+%Y%m%d")
+
+makefile:
+        mv Makefile Makefile.$(YMD)
+        curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 
 count:
 	find ./data -name '*.geojson' -print | wc -l
@@ -7,7 +12,8 @@ prune:
 	git gc --aggressive --prune
 
 archive:
-	tar --exclude='.git' -cvjf $(dest)/$(WHOAMI)-`date "+%Y%m%d"`.bz2 ./
+	echo "archive to $(dest)"
+	tar --exclude='.git' -cvjf $(dest)/$(WHOAMI)-$(YMD).bz2 ./
 
 list-empty:
 	find data -type d -empty -print

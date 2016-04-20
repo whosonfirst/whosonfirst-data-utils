@@ -9,6 +9,9 @@ archive:
 	echo "archive to $(dest)"
 	tar --exclude='.git' -cvjf $(dest)/$(WHOAMI)-$(YMD).bz2 ./
 
+bundles:
+	echo "please write me"
+
 # https://github.com/whosonfirst/go-whosonfirst-concordances
 # Note: this does not bother to check whether the newly minted
 # `wof-concordances-tmp.csv` file is the same as any existing
@@ -35,7 +38,6 @@ postbuffer:
 
 prune:
 	git gc --aggressive --prune
-
 
 rm-empty:
 	find data -type d -empty -print -delete

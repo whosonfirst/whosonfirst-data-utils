@@ -6,7 +6,7 @@ WHOAMI = $(shell basename `pwd`)
 YMD = $(shell date "+%Y%m%d")
 
 archive:
-	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./
+	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
 
 bundles:
 	echo "please write me"

@@ -38,6 +38,7 @@ ia:
 internetarchive:
 	$(MAKE) dest=$(src) archive
 	$(MAKE) src=$(src) ia
+	rm $(src)/$(WHOAMI)-$(YMD).tar.bz2
 
 makefile:
 	mv Makefile Makefile.$(YMD)

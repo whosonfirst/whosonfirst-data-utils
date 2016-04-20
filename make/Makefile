@@ -7,7 +7,7 @@ YMD = $(shell date "+%Y%m%d")
 
 archive:
 	echo "archive to $(dest)"
-	tar --exclude='.git' -cvjf $(dest)/$(WHOAMI)-$(YMD).bz2 ./
+	echo tar --exclude='.git' -cvjf $(dest)/$(WHOAMI)-$(YMD).bz2 ./
 
 bundles:
 	echo "please write me"
@@ -33,10 +33,8 @@ gitignore:
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload
 # https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring
 
-internetarchive:
-	# invoke archive here
-	# ia upload $(WHOAMI)-$(YMD) $(dest)/$(WHOAMI)-$(YMD).bz2 --metadata="title:$(WHOAMI)-$(YMD)"
-	echo "please finish me"
+internetarchive: archive dest=$(src)	
+	echo ia upload $(WHOAMI)-$(YMD) $(src)/$(WHOAMI)-$(YMD).bz2 --metadata="title:$(WHOAMI)-$(YMD) --metadata="licenseurl:http://creativecommons.org/licenses/by/4.0/" --metadata="date:$(YMD)" --metadata="topics:geo,mapzen,whosonfirst"
 
 makefile:
 	mv Makefile Makefile.$(YMD)

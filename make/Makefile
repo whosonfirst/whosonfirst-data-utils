@@ -65,3 +65,19 @@ setup:
 	git config --add oh-my-zsh.hide-status 1
 	# --------
 	# Okay, all done with setup!
+
+# https://github.com/whosonfirst/py-mapzen-whosonfirst-search
+# Note that this does not try to be at all intelligent. It is a 
+# straight clone in to ES for every record.
+# (20160421/thisisaaronland)
+
+sync-es:
+	wof-es-index --source data --bulk --host $(host)
+
+# https://github.com/whosonfirst/go-whosonfirst-s3
+# Note that this does not try to be especially intelligent. It is a 
+# straight clone with only minimal HEAD/lastmodified checks
+# (20160421/thisisaaronland)
+
+sync-s3:
+	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix data -debug

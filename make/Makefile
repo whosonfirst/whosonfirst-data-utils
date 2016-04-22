@@ -5,6 +5,9 @@
 WHOAMI = $(shell basename `pwd`)
 YMD = $(shell date "+%Y%m%d")
 
+# https://github.com/whosonfirst/go-whosonfirst-utils/blob/master/cmd/wof-expand.go
+WOF_EXPAND = $(shell which wof-expand)
+
 archive:
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
 
@@ -40,12 +43,12 @@ internetarchive:
 	$(MAKE) src=$(src) ia
 	rm $(src)/$(WHOAMI)-$(YMD).tar.bz2
 
+list-empty:
+	find data -type d -empty -print
+
 makefile:
 	mv Makefile Makefile.$(YMD)
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
-
-list-empty:
-	find data -type d -empty -print
 
 postbuffer:
 	git config http.postBuffer 104857600
@@ -81,3 +84,12 @@ sync-es:
 
 sync-s3:
 	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix data -processes 64
+
+wof-less:
+	less `$(WOF_EXPAND) -prefix data $(id)`
+
+wof-open:
+	$(EDITOR) `$(WOF_EXPAND) -prefix data $(id)`
+
+wof-path:
+	$(WOF_EXPAND) -prefix data $(id)

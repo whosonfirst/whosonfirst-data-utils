@@ -53,6 +53,13 @@ makefile:
 postbuffer:
 	git config http.postBuffer 104857600
 
+# As in this: https://github.com/whosonfirst/git-whosonfirst-data
+
+post-pull:
+	./.git/hooks/pre-commit --start-commit $(commit)
+	./.git/hooks/post-commit --start-commit $(commit)
+	./.git/hooks/post-push-async --start-commit $(commit)
+
 prune:
 	git gc --aggressive --prune
 

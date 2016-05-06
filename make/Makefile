@@ -37,6 +37,7 @@ gitignore:
 	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/.gitignore
 
 gitlf:
+	if ! test -f .gitattributes; then touch .gitattributes; fi
 ifeq ($(shell grep '*.geojson text eol=lf' .gitattributes | wc -l), 0)
 	cp .gitattributes .gitattributes.tmp
 	perl -pe 'chomp if eof' .gitattributes.tmp

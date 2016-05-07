@@ -62,7 +62,6 @@ list-empty:
 	find data -type d -empty -print
 
 makefile:
-	mv Makefile Makefile.$(YMD)
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 
 postbuffer:

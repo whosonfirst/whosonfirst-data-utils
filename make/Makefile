@@ -20,6 +20,8 @@ bundles:
 # `wof-concordances-latest.csv` file. It should but it doesn't.
 # (20160420/thisisaaronland)
 
+# https://github.com/whosonfirst/whosonfirst-data-utils/issues/2
+
 concordances:
 	wof-concordances-write -processes 100 -source ./data > meta/wof-concordances-tmp.csv
 	mv meta/wof-concordances-tmp.csv meta/wof-concordances-$(YMD).csv

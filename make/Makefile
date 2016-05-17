@@ -106,7 +106,7 @@ sync-es:
 # (20160421/thisisaaronland)
 
 sync-s3:
-	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix data -processes 64
+	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix "" -processes 64
 
 wof-less:
 	less `$(WOF_EXPAND) -prefix data $(id)`

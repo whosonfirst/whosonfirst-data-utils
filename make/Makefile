@@ -105,8 +105,13 @@ sync-es:
 # straight clone with only minimal HEAD/lastmodified checks
 # (20160421/thisisaaronland)
 
+# Also see the way we're passing data as a prefix? That's because we're
+# using the data directory as the root so we need to make sure we prepend
+# it to stuff before sending it to S3 because... well, let's just forget
+# that ever happened okay (20160517/thisisaaronland)
+
 sync-s3:
-	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix "" -processes 64
+	wof-sync-dirs -root data -bucket whosonfirst.mapzen.com -prefix "data" -processes 64
 
 wof-less:
 	less `$(WOF_EXPAND) -prefix data $(id)`

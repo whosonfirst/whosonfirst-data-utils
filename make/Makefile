@@ -74,7 +74,7 @@ postbuffer:
 post-pull:
 	./.git/hooks/pre-commit --start-commit $(commit)
 	./.git/hooks/post-commit --start-commit $(commit)
-	./.git/hooks/post-push-async --start-commit $(commit)
+	./.git/hooks/post-push --start-commit $(commit)
 
 prune:
 	git gc --aggressive --prune

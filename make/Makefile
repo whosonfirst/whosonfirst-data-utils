@@ -52,9 +52,6 @@ endif
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload
 # https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring
 
-git-lfs-meta:
-	git lfs track meta
-
 ia:
 	ia upload $(WHOAMI)-$(YMD) $(src)/$(WHOAMI)-$(YMD).tar.bz2 --metadata="title:$(WHOAMI)-$(YMD)" --metadata="licenseurl:http://creativecommons.org/licenses/by/4.0/" --metadata="date:$(YMD)" --metadata="subject:geo;mapzen;whosonfirst" --metadata="creator:Who's On First (Mapzen)"
 
@@ -102,6 +99,11 @@ setup:
 
 sync-es:
 	wof-es-index --source data --bulk --host $(host)
+
+# https://github.com/whosonfirst/py-mapzen-whosonfirst-spatial
+
+sync-pg:
+	wof-spatial-index --source data --config $(config)
 
 # https://github.com/whosonfirst/go-whosonfirst-s3
 # Note that this does not try to be especially intelligent. It is a 

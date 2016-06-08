@@ -2,9 +2,9 @@
 # 1. Variables at the top of the Makefile.
 # 2. Targets are listed alphabetically. No, really.
 
-WHEREAMI = $(shell `pwd`)
-WHOAMI = $(shell basename $(WHEREAMI)`)
-WHATAMI = $(shell `echo $(WHOAMI) | awk -F '-' '{print $3}'`)
+WHEREAMI = $(shell pwd)
+WHOAMI = $(shell basename $(WHEREAMI))
+WHATAMI = $(shell echo $(WHOAMI) | awk -F '-' '{print $3}')
 
 YMD = $(shell date "+%Y%m%d")
 

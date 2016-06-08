@@ -14,9 +14,6 @@ WOF_EXPAND = $(shell which wof-expand)
 archive:
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
 
-bundles:
-	echo "please write me"
-
 # https://github.com/whosonfirst/go-whosonfirst-concordances
 # Note: this does not bother to check whether the newly minted
 # `wof-concordances-tmp.csv` file is the same as any existing
@@ -70,6 +67,7 @@ makefile:
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 ifeq ($(shell echo $(WHATAMI) | wc -l), 1)
 	if test -f $(WHEREAMI)/Makefile.$(WHATAMI);then  echo "\n# appending Makefile.$(WHATAMI)\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI) >> Makefile; fi
+	if test -f $(WHEREAMI)/Makefile.$(WHATAMI).local;then  echo "\n# appending Makefile.$(WHATAMI).local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI).local >> Makefile; fi
 endif
 	if test -f $(WHEREAMI)/Makefile.local; then echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
 

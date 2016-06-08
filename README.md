@@ -9,7 +9,7 @@ This is still a "wet paint" project.
 ## Makefile
 
 ```
-$> curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
+curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 ```
 
 _Note: This will overwrite any existing `Makefile` so back up or copy accoringly._

@@ -3,7 +3,7 @@
 # 2. Targets are listed alphabetically. No, really.
 
 WHEREAMI = $(shell `pwd`)
-WHOAMI = $(shell basename $(WHEREAMI))
+WHOAMI = $(shell basename $(WHEREAMI)`)
 WHATAMI = $(shell `echo $(WHOAMI) | awk -F '-' '{print $3}'`)
 
 YMD = $(shell date "+%Y%m%d")
@@ -69,9 +69,9 @@ list-empty:
 makefile:
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
 ifeq ($(shell echo $(WHATAMI) | wc -l), 1)
-	if test -f $(WHEREAMI)/Makefile.$(WHATAMI); echo "\n# appending Makefile.$(WHATAMI)\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI) >> Makefile; fi
+	if test -f $(WHEREAMI)/Makefile.$(WHATAMI);then  echo "\n# appending Makefile.$(WHATAMI)\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI) >> Makefile; fi
 endif
-	if test -f $(WHEREAMI)/Makefile.local; echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
+	if test -f $(WHEREAMI)/Makefile.local; then echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
 
 postbuffer:
 	git config http.postBuffer 104857600

@@ -2,7 +2,10 @@
 # 1. Variables at the top of the Makefile.
 # 2. Targets are listed alphabetically. No, really.
 
-WHOAMI = $(shell basename `pwd`)
+WHEREAMI = $(shell `pwd`)
+WHOAMI = $(shell basename $(WHEREAMI))
+WHATAMI = $(shell `echo $(WHOAMI) | awk -F '-' '{print $3}'`)
+
 YMD = $(shell date "+%Y%m%d")
 
 # https://github.com/whosonfirst/go-whosonfirst-utils/blob/master/cmd/wof-expand.go
@@ -32,6 +35,17 @@ gitignore:
 	mv .gitignore .gitignore.$(YMD)
 	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/.gitignore
 
+gitlf:
+	if ! test -f .gitattributes; then touch .gitattributes; fi
+ifeq ($(shell grep '*.geojson text eol=lf' .gitattributes | wc -l), 0)
+	cp .gitattributes .gitattributes.tmp
+	perl -pe 'chomp if eof' .gitattributes.tmp
+	echo "*.geojson text eol=lf" >> .gitattributes.tmp
+	mv .gitattributes.tmp .gitattributes
+else
+	@echo "Git linefeed hoohah already set"
+endif
+
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload
 # https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring
 
@@ -49,6 +63,10 @@ list-empty:
 makefile:
 	mv Makefile Makefile.$(YMD)
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile
+ifeq ($(shell echo $(WHATAMI) | wc -l), 1)
+	if test -f $(WHEREAMI)/Makefile.$(WHATAMI); echo "\n# appending Makefile.$(WHATAMI)\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI) >> Makefile; fi
+endif
+	if test -f $(WHEREAMI)/Makefile.local; echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
 
 postbuffer:
 	git config http.postBuffer 104857600

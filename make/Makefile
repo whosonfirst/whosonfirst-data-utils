@@ -105,6 +105,10 @@ setup:
 sync-es:
 	wof-es-index --source data --bulk --host $(host)
 
+sync-fs:
+	if test ! -d $(dest); then echo "$(dest) does not exist!"; exit 1; fi
+	rsync -az data/ $(dest)
+
 # https://github.com/whosonfirst/py-mapzen-whosonfirst-spatial
 
 sync-pg:

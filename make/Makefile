@@ -11,7 +11,7 @@ YMD = $(shell date "+%Y%m%d")
 # https://github.com/whosonfirst/go-whosonfirst-utils/blob/master/cmd/wof-expand.go
 WOF_EXPAND = $(shell which wof-expand)
 
-archive:
+archive: meta-scrub
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
 
 # https://github.com/whosonfirst/go-whosonfirst-concordances
@@ -70,6 +70,9 @@ ifeq ($(shell echo $(WHATAMI) | wc -l), 1)
 	if test -f $(WHEREAMI)/Makefile.$(WHATAMI).local;then  echo "\n# appending Makefile.$(WHATAMI).local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI).local >> Makefile; fi
 endif
 	if test -f $(WHEREAMI)/Makefile.local; then echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
+
+meta-scrub:
+	ls -a meta/*.csv | grep -v latest | xargs rm
 
 postbuffer:
 	git config http.postBuffer 104857600

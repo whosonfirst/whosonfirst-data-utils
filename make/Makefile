@@ -37,8 +37,13 @@ endif
 
 concordances:
 	wof-concordances-write -processes 100 -source ./data > meta/wof-concordances-tmp.csv
+ifeq ($(WHATAMI),)
 	mv meta/wof-concordances-tmp.csv meta/wof-concordances-$(YMD).csv
 	cp meta/wof-concordances-$(YMD).csv meta/wof-concordances-latest.csv
+else
+	mv meta/wof-concordances-tmp.csv meta/wof-$(WHATAMI)-concordances-$(YMD).csv
+	cp meta/wof-$(WHATAMI)-concordances-$(YMD).csv meta/wof-$(WHATAMI)-concordances-latest.csv
+endif
 
 count:
 	find ./data -name '*.geojson' -print | wc -l
@@ -60,6 +65,15 @@ ifeq ($(shell grep '*.geojson text eol=lf' .gitattributes | wc -l), 0)
 	mv .gitattributes.tmp .gitattributes
 else
 	@echo "Git linefeed hoohah already set"
+endif
+
+gitlfs-add-meta:
+ifeq ($(WHATAMI),)
+	git-lfs add meta/wof-concordances-latest.csv
+	@echo "please fix me (to add wof-PLACETYPE-latest.csv"
+else
+	git-lfs add meta/wof-$(WHATAMI)-latest.csv
+	git-lfs add meta/wof-$(WHATAMI)-concordances-latest.csv
 endif
 
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload

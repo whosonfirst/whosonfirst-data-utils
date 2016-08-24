@@ -22,9 +22,9 @@ bundles:
 	if test -z "$$BUNDLES"; then echo "missing BUNDLES arg"; exit 1; fi
 	if test -z "$$BUCKET"; then echo "missing BUCKET arg"; exit 1; fi
 ifeq ($(WHATAMI),)
-	echo $(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -i address,building,metroarea,postalcode,venue -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
+	$(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -i address,building,metroarea,postalcode,venue -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
 else
-	echo $(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -p $(WHATAMI) -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
+	$(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -p $(WHATAMI) -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
 endif
 
 # https://github.com/whosonfirst/go-whosonfirst-concordances
@@ -86,9 +86,9 @@ endif
 
 metafiles:
 ifeq ($(WHATAMI),)
-	echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
+	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
 else
-	echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
+	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
 endif
 
 meta-scrub:

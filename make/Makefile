@@ -67,14 +67,8 @@ else
 	@echo "Git linefeed hoohah already set"
 endif
 
-gitlfs-add-meta:
-ifeq ($(WHATAMI),)
-	git-lfs add meta/wof-concordances-latest.csv
-	@echo "please fix me (to add wof-PLACETYPE-latest.csv"
-else
-	git-lfs add meta/wof-$(WHATAMI)-latest.csv
-	git-lfs add meta/wof-$(WHATAMI)-concordances-latest.csv
-endif
+gitlfs-track-meta:
+	git-lfs track meta/*-latest.csv
 
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload
 # https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring

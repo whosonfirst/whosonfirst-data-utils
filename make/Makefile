@@ -5,6 +5,7 @@
 WHEREAMI = $(shell pwd)
 WHOAMI = $(shell basename $(WHEREAMI))
 WHATAMI = $(shell echo $(WHOAMI) | awk -F '-' '{print $$3}')
+WHATAMI_REALLY = $(shell basename `pwd` | sed 's/whosonfirst-data-//')
 
 YMD = $(shell date "+%Y%m%d")
 
@@ -41,7 +42,6 @@ ifeq ($(WHATAMI),)
 	mv meta/wof-concordances-tmp.csv meta/wof-concordances-$(YMD).csv
 	cp meta/wof-concordances-$(YMD).csv meta/wof-concordances-latest.csv
 else
-	WHATAMI_REALLY = $(shell echo $(WHATAMI) | sed 's/whosonfirst-data-//')
 	mv meta/wof-concordances-tmp.csv meta/wof-$(WHATAMI_REALLY)-concordances-$(YMD).csv
 	cp meta/wof-$(WHATAMI_REALLY)-concordances-$(YMD).csv meta/wof-$(WHATAMI_REALLY)-concordances-latest.csv
 endif

@@ -11,8 +11,21 @@ YMD = $(shell date "+%Y%m%d")
 # https://github.com/whosonfirst/go-whosonfirst-utils/blob/master/cmd/wof-expand.go
 WOF_EXPAND = $(shell which wof-expand)
 
+WOF_BUNDLE_PLACETYPES = $(shell which wof-bundle-placetypes)
+WOF_CLONE_METAFILES = $(shell which wof-clone-metafiles)
+WOF_PLACETYPE_TO_CSV = $(shell which wof-placetype-to-csv)
+
 archive: meta-scrub
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
+
+bundles:
+	if test -z "$$BUNDLES"; then echo "missing BUNDLES arg"; exit 1; fi
+	if test -z "$$BUCKET"; then echo "missing BUCKET arg"; exit 1; fi
+ifeq ($(WHATAMI), whosonfirst-data)
+	echo $(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -i address,building,metroarea,postalcode,venue -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
+else
+	echo $(WOF_BUNDLE_PLACETYPES) -R $(WHEREAMI) -d $(BUNDLES) -p $(WHATAMI) -S latest --aws-bucket $(BUCKET) --wof-clone $(WOF_CLONE_METAFILES)
+endif
 
 # https://github.com/whosonfirst/go-whosonfirst-concordances
 # Note: this does not bother to check whether the newly minted
@@ -70,6 +83,13 @@ ifeq ($(shell echo $(WHATAMI) | wc -l), 1)
 	if test -f $(WHEREAMI)/Makefile.$(WHATAMI).local;then  echo "\n# appending Makefile.$(WHATAMI).local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.$(WHATAMI).local >> Makefile; fi
 endif
 	if test -f $(WHEREAMI)/Makefile.local; then echo "\n# appending Makefile.local\n\n" >> Makefile; cat $(WHEREAMI)/Makefile.local >> Makefile; fi
+
+metafiles:
+ifeq ($(WHATAMI), whosonfirst-data)
+        echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
+else
+        echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
+endif
 
 meta-scrub:
 	ls -a meta/*.csv | grep -v latest | xargs rm

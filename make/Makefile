@@ -86,9 +86,9 @@ endif
 
 metafiles:
 ifeq ($(WHATAMI), whosonfirst-data)
-        echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
+	echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
 else
-        echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
+	echo $(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
 endif
 
 meta-scrub:

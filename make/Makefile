@@ -48,8 +48,8 @@ docs:
 	curl -s -o CONTRIBUTING.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/docs/CONTRIBUTING.md
 
 gitignore:
-	mv .gitignore .gitignore.$(YMD)
-	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/.gitignore
+	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore
+	curl -s -o .meta/.gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore-meta
 
 gitlf:
 	if ! test -f .gitattributes; then touch .gitattributes; fi

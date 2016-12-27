@@ -95,7 +95,7 @@ endif
 
 metafiles:
 ifeq ($(WHATAMI),)
-	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,metroarea,postalcode,venue
+	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,constituency,metroarea,postalcode,venue
 else
 	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
 endif

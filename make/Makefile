@@ -15,9 +15,32 @@ WOF_EXPAND = $(shell which wof-expand)
 WOF_BUNDLE_PLACETYPES = $(shell which wof-bundle-placetypes)
 WOF_CLONE_METAFILES = $(shell which wof-clone-metafiles)
 WOF_PLACETYPE_TO_CSV = $(shell which wof-placetype-to-csv)
+UNAME_S := $(shell uname -s)
 
 archive: meta-scrub
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
+
+bin:
+	mkdir -p bin
+ifeq ($(UNAME_S),Darwin)
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/darwin/wof-build-metafiles
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/darwin/wof-build-metafiles.sha256
+	make bin-verify
+else ifeq ($(UNAME_S),Linux)
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/linux/wof-build-metafiles
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/linux/wof-build-metafiles.sha256
+	make bin-verify
+else ifeq ($(UNAME_S),Windows)
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/windows/wof-build-metafiles
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/windows/wof-build-metafiles.sha256
+	@echo "Skipping the SHA-256 verification, because Windows"
+else
+	echo "this OS is not supported yet"
+	exit 1
+endif
+
+bin-verify:
+	cd bin && shasum -a 256 -c wof-build-metafiles.sha256
 
 bundles:
 	if test -z "$$BUNDLES"; then echo "missing BUNDLES arg"; exit 1; fi
@@ -133,7 +156,7 @@ setup:
 	# Okay, all done with setup!
 
 # https://github.com/whosonfirst/py-mapzen-whosonfirst-search
-# Note that this does not try to be at all intelligent. It is a 
+# Note that this does not try to be at all intelligent. It is a
 # straight clone in to ES for every record.
 # (20160421/thisisaaronland)
 
@@ -150,7 +173,7 @@ sync-pg:
 	wof-spatial-index --source data --config $(config)
 
 # https://github.com/whosonfirst/go-whosonfirst-s3
-# Note that this does not try to be especially intelligent. It is a 
+# Note that this does not try to be especially intelligent. It is a
 # straight clone with only minimal HEAD/lastmodified checks
 # (20160421/thisisaaronland)
 

@@ -14,7 +14,8 @@ WOF_EXPAND = $(shell which wof-expand)
 
 WOF_BUNDLE_PLACETYPES = $(shell which wof-bundle-placetypes)
 WOF_CLONE_METAFILES = $(shell which wof-clone-metafiles)
-WOF_PLACETYPE_TO_CSV = $(shell which wof-placetype-to-csv)
+WOF_BUILD_METAFILES = $(WHEREAMI)/bin/wof-build-metafiles
+WOF_BUILD_CONCORDANCES = $(WHEREAMI)/bin/wof-build-concordances
 UNAME_S := $(shell uname -s)
 
 archive: meta-scrub
@@ -25,14 +26,20 @@ bin:
 ifeq ($(UNAME_S),Darwin)
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/darwin/wof-build-metafiles
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/darwin/wof-build-metafiles.sha256
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/darwin/wof-build-concordances
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/darwin/wof-build-concordances.sha256
 	make bin-verify
 else ifeq ($(UNAME_S),Linux)
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/linux/wof-build-metafiles
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/linux/wof-build-metafiles.sha256
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/linux/wof-build-concordances
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/linux/wof-build-concordances.sha256
 	make bin-verify
 else ifeq ($(UNAME_S),Windows)
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/windows/wof-build-metafiles
 	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/windows/wof-build-metafiles.sha256
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/windows/wof-build-concordances
+	cd bin && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/windows/wof-build-concordances.sha256
 	@echo "Skipping the SHA-256 verification, because Windows"
 else
 	echo "this OS is not supported yet"
@@ -41,6 +48,11 @@ endif
 
 bin-verify:
 	cd bin && shasum -a 256 -c wof-build-metafiles.sha256
+	cd bin && shasum -a 256 -c wof-build-concordances.sha256
+	chmod +x bin/wof-build-metafiles
+	chmod +x bin/wof-build-concordances
+	rm bin/wof-build-metafiles.sha256
+	rm bin/wof-build-concordances.sha256
 
 bundles:
 	if test -z "$$BUNDLES"; then echo "missing BUNDLES arg"; exit 1; fi
@@ -60,14 +72,7 @@ endif
 # https://github.com/whosonfirst/whosonfirst-data-utils/issues/2
 
 concordances:
-	wof-concordances-write -processes 100 -source ./data > meta/wof-concordances-tmp.csv
-ifeq ($(WHATAMI),)
-	mv meta/wof-concordances-tmp.csv meta/wof-concordances-$(YMD).csv
-	cp meta/wof-concordances-$(YMD).csv meta/wof-concordances-latest.csv
-else
-	mv meta/wof-concordances-tmp.csv meta/wof-$(WHATAMI_REALLY)-concordances-$(YMD).csv
-	cp meta/wof-$(WHATAMI_REALLY)-concordances-$(YMD).csv meta/wof-$(WHATAMI_REALLY)-concordances-latest.csv
-endif
+	$(WOF_BUILD_CONCORDANCES) -processes 100 -repo $(WHEREAMI)
 
 count:
 	find ./data -name '*.geojson' -print | wc -l
@@ -121,9 +126,9 @@ endif
 
 metafiles:
 ifeq ($(WHATAMI),)
-	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -i address,building,constituency,metroarea,postalcode,venue
+	$(WOF_BUILD_METAFILES) -repo $(WHEREAMI) -placetypes address,building,constituency,metroarea,postalcode,venue
 else
-	$(WOF_PLACETYPE_TO_CSV) -R $(WHEREAMI) -l -p $(WHATAMI)
+	$(WOF_BUILD_METAFILES) -repo $(WHEREAMI) -placetypes $(WHATAMI)
 endif
 
 meta-scrub:

@@ -72,6 +72,8 @@ endif
 # https://github.com/whosonfirst/whosonfirst-data-utils/issues/2
 
 concordances:
+	test -s $(WOF_BUILD_CONCORDANCES) || make bin
+	mkdir -p $(WHEREAMI)/meta
 	$(WOF_BUILD_CONCORDANCES) -processes 100 -repo $(WHEREAMI)
 
 count:
@@ -117,6 +119,8 @@ list-empty:
 	find data -type d -empty -print
 
 metafiles:
+	test -s $(WOF_BUILD_METAFILES) || make bin
+	mkdir -p $(WHEREAMI)/meta
 ifeq ($(WHATAMI),)
 	$(WOF_BUILD_METAFILES) -repo $(WHEREAMI) -placetypes address,building,constituency,metroarea,postalcode,venue
 else

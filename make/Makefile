@@ -15,7 +15,7 @@ YMD = $(shell date "+%Y%m%d")
 archive: meta-scrub
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
 
-bin:
+tools:
 	make bin-fetch TARGET=darwin
 	make bin-verify TARGET=darwin
 	make bin-fetch TARGET=linux
@@ -24,7 +24,7 @@ bin:
 	@echo "Skipping the SHA-256 verification, because Windows"
 
 bin-fetch:
-	mkdir -b bin/$(TARGET)
+	mkdir -p bin/$(TARGET)
 	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
 	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
 	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
@@ -48,6 +48,7 @@ else ifeq ($(OS),windows)
 else
 	echo "this OS is not supported yet"
 	exit 1
+endif
 
 count:
 	find ./data -name '*.geojson' -print | wc -l
@@ -101,6 +102,7 @@ else ifeq ($(OS),windows)
 else
 	echo "this OS is not supported yet"
 	exit 1
+endif
 
 prune:
 	git gc --aggressive --prune

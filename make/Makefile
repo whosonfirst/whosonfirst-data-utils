@@ -11,32 +11,8 @@ WHATAMI_REALLY = $(shell basename `pwd` | sed 's/whosonfirst-data-//')
 
 YMD = $(shell date "+%Y%m%d")
 
-
 archive: meta-scrub
 	tar --exclude='.git*' --exclude='Makefile*' -cvjf $(dest)/$(WHOAMI)-$(YMD).tar.bz2 ./data ./meta ./LICENSE.md ./CONTRIBUTING.md ./README.md
-
-tools:
-	make bin-fetch TARGET=darwin
-	make bin-verify TARGET=darwin
-	make bin-fetch TARGET=linux
-	make bin-verify TARGET=linux
-	make bin-fetch TARGET=windows
-	@echo "Skipping the SHA-256 verification, because Windows"
-
-bin-fetch:
-	mkdir -p bin/$(TARGET)
-	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
-	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
-	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
-	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances.sha256
-
-bin-verify:
-	cd bin/$(TARGET) && shasum -a 256 -c wof-build-metafiles.sha256
-	cd bin/$(TARGET) && shasum -a 256 -c wof-build-concordances.sha256
-	chmod +x bin/$(TARGET)/wof-build-metafiles
-	chmod +x bin/$(TARGET)/wof-build-concordances
-	rm bin/$(TARGET)/wof-build-metafiles.sha256
-	rm bin/$(TARGET)/wof-build-concordances.sha256
 
 concordances:
 ifeq ($(OS),darwin)
@@ -109,6 +85,31 @@ prune:
 
 rm-empty:
 	find data -type d -empty -print -delete
+
+scrub: rm-empty prune
+
+tools:
+	make tools-fetch TARGET=darwin
+	make tools-verify TARGET=darwin
+	make tools-fetch TARGET=linux
+	make tools-verify TARGET=linux
+	make tools-fetch TARGET=windows
+	@echo "Skipping the SHA-256 verification, because Windows"
+
+tools-fetch:
+	mkdir -p bin/$(TARGET)
+	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
+	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
+	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
+	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances.sha256
+
+tools-verify:
+	cd bin/$(TARGET) && shasum -a 256 -c wof-build-metafiles.sha256
+	cd bin/$(TARGET) && shasum -a 256 -c wof-build-concordances.sha256
+	chmod +x bin/$(TARGET)/wof-build-metafiles
+	chmod +x bin/$(TARGET)/wof-build-concordances
+	rm bin/$(TARGET)/wof-build-metafiles.sha256
+	rm bin/$(TARGET)/wof-build-concordances.sha256
 
 update-makefile:
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile

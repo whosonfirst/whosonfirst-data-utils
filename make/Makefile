@@ -60,10 +60,10 @@ ia:
 install-hooks:
 	if test ! -f .git/hooks/post-merge; then echo "#!/bin/sh" > .git/hooks/post-merge; chmod 755 .git/hooks/post-merge; fi
 ifeq ($(shell grep 'whosonfirst-data post-merge hooks' .git/hooks/post-merge | wc -l), 0)
-	@echo "whosonfirst-data post-merge hooks already installed"
-else
 	echo "" >> .git/hooks/post-merge
 	curl -s https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/meta/git/hooks/post-merge >> .git/hooks/post-merge
+else
+	@echo "whosonfirst-data post-merge hooks already installed"
 endif
 	curl -s -o .git/hooks/post-merge-whosonfirst https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/meta/git/hooks/post-merge-whosonfirst
 	chmod 755 .git/hooks/post-merge-whosonfirst

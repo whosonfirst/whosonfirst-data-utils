@@ -1,10 +1,16 @@
-#!/bin/sh
+# whosonfirst-data post-merge hooks
+# see the way that there is no shebang here? that's on purppose
+# because we might tacking this on to an existing hook - like something
+# installed by git-lfs - see also: whosonfirst-data-utils
+# (20171201/thisisaaronland)
 
 PYTHON=`which python`
 WHOAMI=`${PYTHON} -c 'import sys; import os; print os.path.abspath(sys.argv[1])' $0`
 
 HOOKS=`dirname ${WHOAMI}`
 DOTGIT=`dirname ${HOOKS}`
-ROOT=`dirname ${DOTGIT}`
 
-make metafiles concordances
+if [ -f ${HOOKS}/post-merge-whosonfirst ]
+then
+    ${HOOKS}/post-merge-whosonfirst
+fi

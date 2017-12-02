@@ -51,14 +51,22 @@ else
 	@echo "Git linefeed hoohah already set"
 endif
 
-gitlfs-track-meta:
-	git-lfs track meta/*-latest.csv
-
 # https://internetarchive.readthedocs.org/en/latest/cli.html#upload
 # https://internetarchive.readthedocs.org/en/latest/quickstart.html#configuring
 
 ia:
 	ia upload $(WHOAMI)-$(YMD) $(src)/$(WHOAMI)-$(YMD).tar.bz2 --metadata="title:$(WHOAMI)-$(YMD)" --metadata="licenseurl:http://creativecommons.org/licenses/by/4.0/" --metadata="date:$(YMD)" --metadata="subject:geo;mapzen;whosonfirst" --metadata="creator:Who's On First (Mapzen)"
+
+install-hooks:
+	if test ! -f .git/hooks/post-merge; then echo "#!/bin/sh" > .git/hooks/post-merge; chmod 755 .git/hooks/post-merge; fi
+ifeq ($(shell grep 'whosonfirst-data post-merge hooks' .git/hooks/post-merge | wc -l), 0)
+	@echo "whosonfirst-data post-merge hooks already installed"
+else
+	echo "" >> .git/hooks/post-merge
+	curl -s https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/meta/git/hooks/post-merge >> .git/hooks/post-merge
+endif
+	curl -s -o .git/hooks/post-merge-whosonfirst https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/meta/git/hooks/post-merge-whosonfirst
+	chmod 755 .git/hooks/post-merge-whosonfirst
 
 internetarchive:
 	$(MAKE) dest=$(src) archive

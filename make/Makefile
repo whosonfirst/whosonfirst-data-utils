@@ -29,16 +29,8 @@ endif
 count:
 	find ./data -name '*.geojson' -print | wc -l
 
-docs:
-	curl -s -o LICENSE.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/docs/LICENSE-SHORT.md
-	curl -s -o CONTRIBUTING.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/docs/CONTRIBUTING.md
-
 githash:
 	git log --pretty=format:'%H' -n 1
-
-gitignore:
-	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore
-	curl -s -o meta/.gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore-meta
 
 gitlf:
 	if ! test -f .gitattributes; then touch .gitattributes; fi
@@ -118,6 +110,16 @@ tools-verify:
 	chmod +x bin/$(TARGET)/wof-build-concordances
 	rm bin/$(TARGET)/wof-build-metafiles.sha256
 	rm bin/$(TARGET)/wof-build-concordances.sha256
+
+update-all: update-docs update-gitignore update-makefile
+
+update-docs:
+	curl -s -o LICENSE.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/docs/LICENSE-SHORT.md
+	curl -s -o CONTRIBUTING.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/docs/CONTRIBUTING.md
+
+update-gitignore:
+	curl -s -o .gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore
+	curl -s -o meta/.gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore-meta
 
 update-makefile:
 	curl -s -o Makefile https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/make/Makefile

@@ -97,8 +97,8 @@ tools:
 	@echo "Skipping the SHA-256 verification, because Windows"
 
 tools-fetch:
-	mkdir -p bin/$(TARGET)
-	cd bin/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
+	mkdir -p utils/$(TARGET)
+	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
 	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
 	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
 	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances.sha256

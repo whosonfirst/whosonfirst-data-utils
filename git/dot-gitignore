@@ -7,3 +7,4 @@ Makefile.*
 .changed-*
 .merge-*
 *.svg
+bin

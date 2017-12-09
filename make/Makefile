@@ -132,4 +132,5 @@ endif
 update-meta:
 	if test ! -d meta; then mkdir meta; fi
 	rm -f meta/*.csv
+	curl -s -o meta/README.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/meta/README.md
 	curl -s -o meta/.gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore-meta

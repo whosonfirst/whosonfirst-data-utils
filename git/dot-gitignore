@@ -6,6 +6,4 @@ Makefile.*
 .DS_Store
 .changed-*
 .merge-*
-bin
-!bin/*/wof-*
 *.svg

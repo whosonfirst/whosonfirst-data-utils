@@ -88,29 +88,6 @@ rm-empty:
 
 scrub: rm-empty prune
 
-tools:
-	make tools-fetch TARGET=darwin
-	make tools-verify TARGET=darwin
-	make tools-fetch TARGET=linux
-	make tools-verify TARGET=linux
-	make tools-fetch TARGET=windows
-	@echo "Skipping the SHA-256 verification, because Windows"
-
-tools-fetch:
-	mkdir -p utils/$(TARGET)
-	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
-	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
-	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
-	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances.sha256
-
-tools-verify:
-	cd utils/$(TARGET) && shasum -a 256 -c wof-build-metafiles.sha256
-	cd utils/$(TARGET) && shasum -a 256 -c wof-build-concordances.sha256
-	chmod +x utils/$(TARGET)/wof-build-metafiles
-	chmod +x utils/$(TARGET)/wof-build-concordances
-	rm utils/$(TARGET)/wof-build-metafiles.sha256
-	rm utils/$(TARGET)/wof-build-concordances.sha256
-
 update-all: update-docs update-gitignore update-makefile
 
 update-docs:
@@ -134,3 +111,27 @@ update-meta:
 	rm -f meta/*.csv
 	curl -s -o meta/README.md https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/meta/README.md
 	curl -s -o meta/.gitignore https://raw.githubusercontent.com/whosonfirst/whosonfirst-data-utils/master/git/dot-gitignore-meta
+
+update-utils:
+	make utils-fetch TARGET=darwin
+	make utils-verify TARGET=darwin
+	make utils-fetch TARGET=linux
+	make utils-verify TARGET=linux
+	make utils-fetch TARGET=windows
+	@echo "Skipping the SHA-256 verification, because Windows"
+
+utils-fetch:
+	mkdir -p utils/$(TARGET)
+	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles
+	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-meta/master/dist/$(TARGET)/wof-build-metafiles.sha256
+	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances
+	cd utils/$(TARGET) && curl -s -O https://raw.githubusercontent.com/whosonfirst/go-whosonfirst-concordances/master/dist/$(TARGET)/wof-build-concordances.sha256
+
+utils-verify:
+	cd utils/$(TARGET) && shasum -a 256 -c wof-build-metafiles.sha256
+	cd utils/$(TARGET) && shasum -a 256 -c wof-build-concordances.sha256
+	chmod +x utils/$(TARGET)/wof-build-metafiles
+	chmod +x utils/$(TARGET)/wof-build-concordances
+	rm utils/$(TARGET)/wof-build-metafiles.sha256
+	rm utils/$(TARGET)/wof-build-concordances.sha256
+

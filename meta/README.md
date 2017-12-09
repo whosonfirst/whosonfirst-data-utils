@@ -8,7 +8,7 @@ To generate "concordances" files `cd` in to the root directory of this repositor
 
 There is also a Git hook to automatically regenerate both the "meta" and "concordances" files. This can	be installed by typing `make install-hooks`.
 
-You can update the tools used to generate the meta files and concordances files by typing `make tools`.
+You can update the tools used to generate the meta files and concordances files by typing `make update-utils`.
 
 ## See also
 
